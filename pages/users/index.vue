@@ -12,6 +12,12 @@
 <script>
 export default {
   name: "index",
+  data: () => ({
+    users: []
+  }),
+  mounted() {
+    this.$axios.
+  },
   methods: {
     openUser(user) {
       this.$router.push('/users/' + user)
