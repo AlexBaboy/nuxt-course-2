@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1>Users page</h1>
+    <h1>{{pageTitle}}</h1>
     <ul>
       <li v-for="user of users" :key="user.id">
         <a href="#" @click.prevent="openUser(user)">{{user.name}}</a>
@@ -13,15 +13,21 @@
 export default {
   name: "index",
   data: () => ({
-    users: []
+    pageTitle: 'Users page'
   }),
-  async asyncData({$axios}) {
-    const users = await $axios.$get('https://jsonplaceholder.typicode.com/users')
-    return {users}
+  async fetch({store}) {
+    if(store.getters['users/users'].length === 0) {
+      await store.dispatch('users/fetch')
+    }
   },
   methods: {
     openUser(user) {
       this.$router.push('/users/' + user.id)
+    }
+  },
+  computed: {
+    users() {
+      return this.$store.getters['users/users']
     }
   }
 }

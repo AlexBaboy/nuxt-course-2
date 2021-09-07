@@ -16,8 +16,11 @@
           <li class="nav-item">
             <nuxt-link active-class="active" class="nav-link" to="/users">Users</nuxt-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="!hasToken">
             <nuxt-link active-class="active" class="nav-link" to="/login">Login</nuxt-link>
+          </li>
+          <li class="nav-item" v-else>
+            <nuxt-link @click.prevent="logout" class="nav-link" to="#">Logout</nuxt-link>
           </li>
         </ul>
         <form class="d-flex">
@@ -31,7 +34,18 @@
 
 <script>
 export default {
-  name: "Navbar"
+  name: "Navbar",
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+      this.$router.push('/login')
+    }
+  },
+  computed: {
+    hasToken() {
+      return this.$store.getters.hasToken
+    }
+  }
 }
 </script>
 
